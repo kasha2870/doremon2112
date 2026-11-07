@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b15">
+  <meta name="description" content="Digital Clock — paparan masa moden dengan jam real-time, stopwatch, countdown dan alarm.">
+  <title>Digital Clock — Smart Time Display</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Digital Clock, ke halaman utama"><span class="brand-mark"><span></span><span></span><span></span></span><span>DIGITAL<span class="brand-light">CLOCK</span></span></a>
+    <nav class="main-nav" aria-label="Navigasi utama"><a class="nav-link active" href="#home">Clock</a><a class="nav-link" href="#tools">Tools</a><a class="nav-link" href="#world">World time</a></nav>
+    <div class="header-actions"><button class="icon-button" id="soundToggle" type="button" aria-label="Hidupkan bunyi" title="Sound on/off"><span id="soundIcon">♪</span></button><button class="icon-button" id="themeToggle" type="button" aria-label="Tukar tema" title="Dark/light mode">☼</button><button class="settings-button" id="settingsOpen" type="button"><span class="settings-glyph">☷</span><span>Settings</span></button></div>
+  </header>
+
+  <main id="home">
+    <section class="hero section-wrap" aria-labelledby="heroTitle">
+      <div class="hero-copy"><span class="eyebrow"><span class="live-dot"></span> YOUR PERSONAL TIMEKEEPER</span><h1 id="heroTitle">YOUR TIME,<br><span>YOUR STYLE.</span></h1><p>Set the pace. Make every second yours.</p></div>
+      <div class="clock-card glass-card" id="clockCard">
+        <div class="clock-topline"><span class="clock-label"><span class="live-dot"></span> LOCAL TIME</span><span class="timezone-label" id="timezoneLabel">LOCAL · --</span></div>
+        <div class="clock-display classic" id="clockDisplay" aria-label="Current local time" aria-live="off">
+          <span class="digit-group" id="hourDigits">--</span><span class="time-separator">:</span><span class="digit-group" id="minuteDigits">--</span><span class="time-separator seconds-separator">:</span><span class="digit-group seconds-group" id="secondDigits">--</span><span class="ampm" id="ampmLabel"></span>
+        </div>
+        <div class="clock-date"><span class="date-icon">◷</span><span id="dateLabel">Loading date…</span></div>
+        <div class="clock-bottom"><span class="status-pill"><span class="status-dot"></span><span id="dayPeriod">A new day, on your terms</span></span><button class="fullscreen-button" id="fullscreenToggle" type="button" title="Enter fullscreen" aria-label="Skrin penuh">⛶</button></div>
+      </div>
+      <div class="style-picker"><div class="picker-heading"><div><span class="eyebrow">MAKE IT YOURS</span><h2>Choose your clock</h2></div><span class="picker-count">06 STYLES</span></div><div class="style-options" role="group" aria-label="Clock style">
+        <button class="style-option selected" data-style="classic" type="button"><span class="style-preview preview-classic">12<span>:</span>45</span><span>Classic</span></button>
+        <button class="style-option" data-style="led" type="button"><span class="style-preview preview-led">12<span>:</span>45</span><span>LED</span></button>
+        <button class="style-option" data-style="neon" type="button"><span class="style-preview preview-neon">12<span>:</span>45</span><span>Neon</span></button>
+        <button class="style-option" data-style="minimal" type="button"><span class="style-preview preview-minimal">12<span>:</span>45</span><span>Minimal</span></button>
+        <button class="style-option" data-style="flip" type="button"><span class="style-preview preview-flip"><i>12</i><b>:</b><i>45</i></span><span>Flip</span></button>
+        <button class="style-option" data-style="future" type="button"><span class="style-preview preview-future">12<span>:</span>45</span><span>Future</span></button>
+      </div></div>
+    </section>
+
+    <section class="tools-section section-wrap" id="tools">
+      <div class="section-heading"><div><span class="eyebrow">TIME, ON YOUR TERMS</span><h2>Your toolkit</h2></div><p>Everything you need to make the most of now.</p></div>
+      <div class="tool-grid">
+        <article class="tool-card glass-card" id="stopwatch"><div class="tool-head"><span class="tool-icon">⏱</span><span class="tool-kicker">STOPWATCH</span><span class="tool-status" id="stopwatchStatus">READY</span></div><div class="tool-time mono" id="stopwatchDisplay">00:00<span>.00</span></div><div class="tool-controls"><button class="primary-button" id="stopwatchStart" type="button">Start</button><button class="secondary-button" id="stopwatchLap" type="button" disabled>Lap</button><button class="secondary-button" id="stopwatchReset" type="button">Reset</button></div><ol class="lap-list" id="lapList" aria-label="Stopwatch laps"></ol></article>
+        <article class="tool-card glass-card" id="countdown"><div class="tool-head"><span class="tool-icon">◷</span><span class="tool-kicker">COUNTDOWN</span><span class="tool-status" id="timerStatus">READY</span></div><div class="timer-inputs" id="timerInputs"><label><input id="timerHours" type="number" min="0" max="99" value="0" inputmode="numeric" aria-label="Hours"><span>HR</span></label><b>:</b><label><input id="timerMinutes" type="number" min="0" max="59" value="5" inputmode="numeric" aria-label="Minutes"><span>MIN</span></label><b>:</b><label><input id="timerSeconds" type="number" min="0" max="59" value="0" inputmode="numeric" aria-label="Seconds"><span>SEC</span></label></div><div class="tool-time mono timer-display" id="timerDisplay" hidden>00:05:00</div><div class="tool-controls"><button class="primary-button" id="timerStart" type="button">Start timer</button><button class="secondary-button" id="timerReset" type="button">Reset</button></div></article>
+        <article class="tool-card glass-card alarm-card" id="alarm"><div class="tool-head"><span class="tool-icon">◉</span><span class="tool-kicker">ALARM</span><span class="tool-status" id="alarmStatus">0 SET</span></div><form class="alarm-form" id="alarmForm"><label class="sr-only" for="alarmTime">Alarm time</label><input id="alarmTime" type="time" required><label class="sr-only" for="alarmLabel">Alarm label</label><input id="alarmLabel" type="text" maxlength="32" placeholder="Name this alarm"><button class="primary-button" type="submit">＋ Add alarm</button></form><ul class="alarm-list" id="alarmList" aria-label="Your alarms"></ul></article>
+      </div>
+    </section>
+
+    <section class="world-section section-wrap" id="world"><div class="section-heading"><div><span class="eyebrow">CONNECTED, EVERYWHERE</span><h2>World time</h2></div><p>Keep in sync with the people who matter.</p></div><div class="world-grid" id="worldGrid"></div></section>
+  </main>
+
+  <footer class="footer"><a class="brand" href="#home"><span class="brand-mark"><span></span><span></span><span></span></span><span>DIGITAL<span class="brand-light">CLOCK</span></span></a><span>Modern time experience.</span><span>© <span id="copyrightYear"></span> Digital Clock</span></footer>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div><aside class="settings-drawer" id="settingsDrawer" aria-label="Clock settings" aria-hidden="true"><div class="drawer-head"><div><span class="eyebrow">MAKE IT YOURS</span><h2>Settings</h2></div><button class="icon-button" id="settingsClose" type="button" aria-label="Tutup tetapan">×</button></div>
+    <div class="setting-group"><h3>Display</h3><label class="setting-row"><span>Time format</span><select id="formatSetting"><option value="12">12-hour</option><option value="24">24-hour</option></select></label><label class="setting-row"><span>Show seconds</span><input id="secondsSetting" type="checkbox" class="switch"></label><label class="setting-row"><span>Digit animation</span><input id="animationSetting" type="checkbox" class="switch"></label><label class="setting-row range-row"><span>Clock size <output id="sizeValue">100%</output></span><input id="sizeSetting" type="range" min="70" max="130" value="100"></label><label class="setting-row range-row"><span>Brightness <output id="brightnessValue">100%</output></span><input id="brightnessSetting" type="range" min="45" max="120" value="100"></label></div>
+    <div class="setting-group"><h3>Color &amp; theme</h3><label class="setting-row"><span>Digit color</span><input id="colorSetting" type="color" value="#91f5e1" aria-label="Digit color"></label><label class="setting-row"><span>Background accent</span><input id="backgroundSetting" type="color" value="#101c35" aria-label="Background color"></label><label class="setting-row"><span>Typeface</span><select id="fontSetting"><option value="space">Space Grotesk</option><option value="mono">DM Mono</option><option value="sans">DM Sans</option></select></label><div class="swatches" aria-label="Background presets"><button type="button" data-bg="#101c35" style="--swatch:#101c35" aria-label="Midnight blue"></button><button type="button" data-bg="#241344" style="--swatch:#241344" aria-label="Cosmic purple"></button><button type="button" data-bg="#102c2d" style="--swatch:#102c2d" aria-label="Deep teal"></button><button type="button" data-bg="#17191f" style="--swatch:#17191f" aria-label="Graphite"></button></div></div>
+    <div class="drawer-note"><span>✓</span> Your preferences save automatically on this device.</div><button class="reset-settings" id="resetSettings" type="button">Reset all settings</button>
+  </aside>
+  <div class="alarm-overlay" id="alarmOverlay" role="alertdialog" aria-modal="true" aria-labelledby="alarmOverlayTitle"><div class="alarm-dialog glass-card"><span class="alarm-pulse">◉</span><span class="eyebrow">TIME TO WAKE UP</span><h2 id="alarmOverlayTitle">Alarm</h2><p id="alarmOverlayMessage">Your alarm is ringing.</p><button class="primary-button" id="alarmDismiss" type="button">Dismiss alarm</button></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
